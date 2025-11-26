@@ -1,8 +1,6 @@
-from data import load_holidays
-from list_CRUD import *
+from file_CRUD import *
 
 holidays = load_holidays()
-
 id_counter = 3
 while True: #begalinis ciklas, kuris igalina funkcijos veikima vel ir vel
     print_info()

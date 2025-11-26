@@ -1,19 +1,16 @@
-from data import load_holidays
-def print_holidays(holidays):
-    for hol in holidays:
-        print(
-            f"{hol['id']}. Atostogos {hol['country']} {hol['city']}. Kaina gyvenant {hol['accomodation']} parai {hol['price']}")
 
-def delete_holidays(holidays):
-    print_holidays(holidays)
-    print("iveskite id iraso kuri nori trinti")
-    del_id = input()
-    for hol in holidays:
-        if del_id == str(hol['id']):
-            print(hol)
-            pos = holidays.index(hol)
-            del holidays[pos]
-            break
+import csv
+
+headers = ['id','country','city','price','accomodation']
+def load_holidays():
+    with open("holidays.csv",mode='r',encoding='utf-8') as file:
+        return list(csv.DictReader(file))
+
+def save_holidays(holidays):
+    with open('holidays.csv',mode='w',newline='',encoding='utf-8') as file:
+        writer = csv.DictWriter(file,headers)
+        writer.writeheader()
+        writer.writerows(holidays)
 
 def create_holidays(id_counter, holidays):
     print("pridedu nauja")
@@ -28,7 +25,10 @@ def create_holidays(id_counter, holidays):
     id_counter += 1
     hol = {'id': id_counter, "country": country, "city": city, "price": price, "accomodation": accom}
     holidays.append(hol)
+    save_holidays(holidays)
     return id_counter
+
+
 def edit_holidays(holidays):
     print_holidays(holidays)
     print("iveskite id iraso kuri nori redaguoti")
@@ -44,6 +44,19 @@ def edit_holidays(holidays):
             print("Iveskite kaina")
             hol['price'] = float(input())
             break
+    save_holidays(holidays)
+
+def delete_holidays(holidays):
+    print_holidays(holidays)
+    print("iveskite id iraso kuri nori trinti")
+    del_id = input()
+    for hol in holidays:
+        if del_id == str(hol['id']):
+            pos = holidays.index(hol)
+            del holidays[pos]
+            break
+    save_holidays(holidays)
+
 
 def print_info():
     print("--------------------------------------------------------------------------")
@@ -53,3 +66,7 @@ def print_info():
     print("4. šalinti atostogas")
     print("5. išeiti iš programos")
     print("-----------------------------Pasirinkite:---------------------------------")
+def print_holidays(holidays):
+    for hol in holidays:
+        print(
+            f"{hol['id']}. Atostogos {hol['country']} {hol['city']}. Kaina gyvenant {hol['accomodation']} parai {hol['price']}")
